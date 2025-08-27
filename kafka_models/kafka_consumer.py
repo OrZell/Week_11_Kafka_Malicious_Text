@@ -23,6 +23,14 @@ class Consumer:
             messages.append(message)
         return messages
 
+    @staticmethod
+    def convert_to_dct_of_topic_and_value(event):
+        message = {
+            'topic': event.topic,
+            'value': event.value
+        }
+        return message
+
     def get_consumer_events(self, topic):
         consumer = KafkaConsumer(*topic,
                                  group_id='my-group',
