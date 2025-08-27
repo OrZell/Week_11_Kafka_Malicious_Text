@@ -53,5 +53,5 @@ class Manager_Fetching:
     def publish_data(self, data:dict):
         antisemitic_data = data['antisemitic']
         not_antisemitic_data = data['not_antisemitic']
-        self.Producer.publish_list_of_messages(messages=antisemitic_data, topic='antisemitic')
-        self.Producer.publish_list_of_messages(messages=not_antisemitic_data, topic='not_antisemitic')
+        self.Producer.publish_list_of_messages(messages=antisemitic_data, topic='raw_tweets_antisemitic')
+        self.Producer.publish_list_of_messages(messages=not_antisemitic_data, topic='raw_tweets_not_antisemitic')
