@@ -23,6 +23,16 @@ class Consumer:
             messages.append(message)
         return messages
 
+    def get_consumer_events(self, topic):
+        consumer = KafkaConsumer(*topic,
+                                 group_id='my-group',
+                                 value_deserializer=lambda m: json.loads(m.decode('utf-8')),
+                                 bootstrap_servers=[self.URI])
+
+        # consumer_timeout_ms = 10000 optional
+
+        return consumer
+
     # def consumer_with_auto_commit(self, topic):
     #     events = self.get_consumer_events(topic)
     #     events = self.convert_to_messages(events)
@@ -41,10 +51,3 @@ class Consumer:
     # def timestamp(self):
     #     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    def get_consumer_events(self, topic):
-        consumer = KafkaConsumer(topic,
-                                 group_id='my-group',
-                                 value_deserializer=lambda m: json.loads(m.decode('utf-8')),
-                                 bootstrap_servers=[self.URI],
-                                 consumer_timeout_ms=10000)
-        return consumer
