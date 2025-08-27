@@ -13,20 +13,36 @@ class processor:
         self.lemmatizer = WordNetLemmatizer()
 
 
-    def process(self, tweets):
-        for item in tweets:
-            text = item['text'].lower()
-            text = re.sub(r'[^a-z0-9\s]', '', text)
-            text = ' '.join(text.split())
-            words = text.split()
-            processed_words = []
-            for word in words:
-                if word not in self.stopwords:
-                    processed_words.append(self.lemmatizer.lemmatize(word))
-            processed_text = ' '.join(processed_words)
-            item['processed_text'] = processed_text
+    # def process(self, tweets):
+    #     for item in tweets:
+    #         text = item['text'].lower()
+    #         text = re.sub(r'[^a-z0-9\s]', '', text)
+    #         text = ' '.join(text.split())
+    #         words = text.split()
+    #         processed_words = []
+    #         for word in words:
+    #             if word not in self.stopwords:
+    #                 processed_words.append(self.lemmatizer.lemmatize(word))
+    #         processed_text = ' '.join(processed_words)
+    #         item['processed_text'] = processed_text
+    #
+    # return tweets
 
-        return tweets
+
+    def process(self, item):
+
+        text = item['text'].lower()
+        text = re.sub(r'[^a-z0-9\s]', '', text)
+        text = ' '.join(text.split())
+        words = text.split()
+        processed_words = []
+        for word in words:
+           if word not in self.stopwords:
+              processed_words.append(self.lemmatizer.lemmatize(word))
+              processed_text = ' '.join(processed_words)
+              item['processed_text'] = processed_text
+
+        return item
 
 
 
