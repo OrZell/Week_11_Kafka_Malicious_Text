@@ -1,3 +1,11 @@
-python-dotenv~=1.1.1
-kafka-python~=2.2.15
-nltk~=3.9.1
+click
+colorama
+dnspython
+dotenv
+joblib
+kafka-python
+nltk
+pymongo
+python-dotenv
+regex
+tqdm

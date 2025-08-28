@@ -1,5 +1,4 @@
 from kafka import KafkaProducer
-# from kafka_models.configurations import HOST, PORT
 from dotenv import find_dotenv, load_dotenv
 import os
 import json
@@ -20,9 +19,10 @@ class Producer:
         producer = self.get_producer_config()
         # print(f'topic={topic} || message={message}')
         producer.send(topic=topic, value=message)
+        producer.flush()
 
     def get_producer_config(self):
-        producer =  KafkaProducer(bootstrap_servers=[self.URI],
+        producer = KafkaProducer(bootstrap_servers=[self.URI],
                                  value_serializer=lambda x:
                                   json.dumps(x).encode('utf-8'))
         return producer

@@ -1,32 +1,37 @@
-import pymongo
-from pymongo.errors import PyMongoError
+from pymongo import MongoClient
+from dotenv import find_dotenv, load_dotenv
+import os
 
 
 class MongoDal:
 
-    def __init__(self,connection_string,db_name):
+    def __init__(self):
+        load_dotenv(find_dotenv())
+        self.MongodbHost = os.getenv('LOCAL_MONGODB_HOST')
+        self.MongodbPort = os.getenv('LOCAL_MONGODB_PORT')
+        self.MongodbDB = os.getenv('LOCAL_MONGODB_DB')
+        self.MongodbAnitCollection = os.getenv('LOCAL_MONGODB_COLLECTION_ANTI')
+        self.MongodbNotAnitCollection = os.getenv('LOCAL_MONGODB_COLLECTION_NOT_ANTI')
+        self.ConnectString = os.getenv('LOCAL_MONGODB_CONNECT_STRING')
 
-        try:
-            self.client = pymongo.MongoClient(connection_string)
-            self.db = self.client[db_name]
-            self.antisemitic_collection = self.db['tweets_antisemitic']
-            self.not_antisemitic_collection = self.db['tweets_not_antisemitic']
+        self.connection = None
 
-        except PyMongoError as e:
-            self.client = None
+    def open_connection(self):
+        if self.connection is None:
+            self.connection = MongoClient(self.ConnectString)
+        return self.connection
+
+    def close_connection(self):
+        if self.connection:
+            self.connection.close()
 
 
     def save_tweet(self, tweet_data):
-        if self.client is None:
-            return None
 
-        if tweet_data["topic"] == "'enriched_preprocessed_tweets_antisemitic'":
-            self.antisemitic_collection.insert_one(tweet_data["value"])
+        connection = self.open_connection()
+
+        if tweet_data["topic"] == "enriched_preprocessed_tweets_antisemitic":
+            connection[self.MongodbDB][self.MongodbAnitCollection].insert_one(tweet_data['value'])
 
         elif tweet_data["topic"] == "enriched_preprocessed_tweets_not_antisemitic":
-            self.not_antisemitic_collection.insert_one(tweet_data["value"])
-
-
-    def close_connection(self):
-        if self.client is not None:
-            self.client.close()
+            connection[self.MongodbDB][self.MongodbNotAnitCollection].insert_one(tweet_data['value'])

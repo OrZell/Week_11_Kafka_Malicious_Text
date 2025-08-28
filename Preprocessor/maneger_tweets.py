@@ -16,14 +16,18 @@ class Maneger:
       topic_data = self.consumer.get_consumer_events(['raw_tweets_antisemitic', 'raw_tweets_not_antisemitic'])
 
       for event in topic_data:
+         # print(event)
+         # continue
          all_message = self.consumer.convert_to_dct_of_topic_and_value(event)
          if all_message["topic"] == "raw_tweets_antisemitic":
             self.preprocessed_tweets_antisemitic = self.processed_tweets.process(all_message["value"])
             print(self.preprocessed_tweets_antisemitic)
-            self.producer_tweets.publish_list_of_messages(messages=self.preprocessed_tweets_antisemitic,topic='preprocessed_tweets_antisemitic')
+            self.producer_tweets.publish_message(message=self.preprocessed_tweets_antisemitic,topic='preprocessed_tweets_antisemitic')
          elif all_message["topic"] == "raw_tweets_not_antisemitic":
             self.preprocessed_tweets_not_antisemitic = self.processed_tweets.process(all_message["value"])
             print(self.preprocessed_tweets_not_antisemitic)
-            self.producer_tweets.publish_list_of_messages(messages=self.preprocessed_tweets_not_antisemitic,topic='preprocessed_tweets_not_antisemitic')
+            self.producer_tweets.publish_message(message=self.preprocessed_tweets_not_antisemitic,topic='preprocessed_tweets_not_antisemitic')
+      self.producer_tweets.get_producer_config().flush()
+
 
 
