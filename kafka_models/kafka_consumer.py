@@ -1,8 +1,6 @@
-# from kafka_models.configurations import HOST, PORT
 from dotenv import find_dotenv, load_dotenv
 import os
 from kafka import KafkaConsumer
-from datetime import datetime
 import json
 
 class Consumer:
@@ -40,22 +38,4 @@ class Consumer:
         # consumer_timeout_ms = 10000 optional
 
         return consumer
-
-    # def consumer_with_auto_commit(self, topic):
-    #     events = self.get_consumer_events(topic)
-    #     events = self.convert_to_messages(events)
-    #     return events
-    #
-    # def add_timestamp(self, events):
-    #     data_as_documents = []
-    #     for event in events:
-    #         document = {}
-    #         document['message'] = event
-    #         document['timestamp'] = self.timestamp()
-    #         data_as_documents.append(document)
-    #
-    #     return data_as_documents
-    #
-    # def timestamp(self):
-    #     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
