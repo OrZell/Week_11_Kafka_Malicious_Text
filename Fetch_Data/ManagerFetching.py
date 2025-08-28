@@ -1,7 +1,7 @@
 from Fetch_Data.Fetcher import Fetcher
 from kafka_models.kafka_producer import Producer
 
-class Manager_Fetching:
+class ManagerFetching:
 
     def __init__(self):
         self.Fetcher = Fetcher()
@@ -55,3 +55,4 @@ class Manager_Fetching:
         not_antisemitic_data = data['not_antisemitic']
         self.Producer.publish_list_of_messages(messages=antisemitic_data, topic='raw_tweets_antisemitic')
         self.Producer.publish_list_of_messages(messages=not_antisemitic_data, topic='raw_tweets_not_antisemitic')
+        self.Producer.get_producer_config().flush()

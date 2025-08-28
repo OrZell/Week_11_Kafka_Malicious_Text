@@ -1,7 +1,7 @@
-from Manager_Fetching import Manager_Fetching
+from ManagerFetching import ManagerFetching
 import time
 
-manager = Manager_Fetching()
+manager = ManagerFetching()
 
 def run():
     while True:

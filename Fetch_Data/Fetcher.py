@@ -1,5 +1,3 @@
-from xml.etree.ElementTree import indent
-
 from pymongo import MongoClient
 from dotenv import find_dotenv, load_dotenv
 import os
