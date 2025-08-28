@@ -15,7 +15,7 @@ class Processor:
 
     def process(self, item):
 
-        text = item['text'].lower()
+        text = item['original_text'].lower()
         text = re.sub(r'[^a-z0-9\s]', '', text)
         text = ' '.join(text.split())
         words = text.split()
@@ -24,7 +24,7 @@ class Processor:
            if word not in self.stopwords:
               processed_words.append(self.lemmatizer.lemmatize(word))
         processed_text = ' '.join(processed_words)
-        item['processed_text'] = processed_text
+        item['clean_text'] = processed_text
 
         return item
 

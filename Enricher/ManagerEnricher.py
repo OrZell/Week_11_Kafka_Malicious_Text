@@ -16,9 +16,9 @@ class ManagerEnricher:
             # print(event)
             # continue
             event = self.Consumer.convert_to_dct_of_topic_and_value(event)
-            print(event)
             event = self.Enricher.do_all(event['value'])
-            if event['Antisemitic']:
+            print(event)
+            if event['antisemitic']:
                 self.Producer.publish_message(topic='enriched_preprocessed_tweets_antisemitic', message=event)
             else:
                 self.Producer.publish_message(topic='enriched_preprocessed_tweets_not_antisemitic', message=event)

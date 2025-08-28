@@ -19,6 +19,7 @@ class Enricher:
         event['sentiment'] = emotion_as_string
         event['weapons_detected'] = guns
         event['relevant_timestamp'] = date
+        event = self.reorder_the_data(event)
         return event
 
 
@@ -38,7 +39,7 @@ class Enricher:
 
     @staticmethod
     def get_processed_text(event:dict) -> str:
-        return event['processed_text']
+        return event['clean_text']
 
     def find_weapons_in_processed_text(self, processed_text:str) -> list:
         weapons = []
@@ -50,11 +51,21 @@ class Enricher:
             if weapon in splited_processed_text:
                 weapons.append(weapon)
 
+        if len(weapons) == 0:
+            return ''
         return weapons
 
     @staticmethod
     def search_dates(processed_text):
         dates = re.findall(r'\d{4}-\d{2}-\d{2}', processed_text)
         last_one = sorted(dates, reverse=True)
-        return last_one
 
+        if len(last_one) == 0:
+            return ''
+        return last_one[0]
+
+    @staticmethod
+    def reorder_the_data(message:dict):
+        order_template = ['id', 'createdate', 'antisemitic', 'original_text', 'clean_text', 'sentiment', 'weapons_detected', 'relevant_timestamp']
+        ordered_message = {key: message[key] for key in order_template}
+        return ordered_message

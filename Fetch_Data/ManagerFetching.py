@@ -26,14 +26,15 @@ class ManagerFetching:
                 }
 
         for document in documents:
-            if document['Antisemitic'] == 1:
+            if document['antisemitic'] == 1:
                 data['antisemitic'].append(document)
             else:
                 data['not_antisemitic'].append(document)
 
         return data
 
-    def remove_id_statement(self, documents) -> list:
+    @staticmethod
+    def remove_id_statement(documents) -> list:
         data = []
         for document in documents:
             doc_id = str(document['_id'])
@@ -46,9 +47,16 @@ class ManagerFetching:
 
         return data
 
-    def convert_date_to_str(self, documents):
+    @staticmethod
+    def convert_date_to_str(documents):
         for document in documents:
-            document['CreateDate'] = document['CreateDate'].strftime("%m/%d/%Y, %H:%M:%S")
+            document['createdate'] = document['CreateDate'].strftime("%m/%d/%Y, %H:%M:%S")
+            document['original_text'] = document['text']
+            document['antisemitic'] = document['Antisemitic']
+
+            del document['CreateDate']
+            del document['text']
+            del document['Antisemitic']
 
     def publish_data(self, data:dict):
         antisemitic_data = data['antisemitic']
